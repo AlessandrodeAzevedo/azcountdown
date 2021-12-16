@@ -12,7 +12,12 @@ class AzCountdown
     localstorageKey;
     uniqId = this.guidGenerator();
     date = new Date(Date.now() + ( 3600 * 1000 * 168));
+    labels = [];
     constructor ( obj = null) {
+        this.labels['days'] = 'DAYS';
+        this.labels['hours'] = 'HOURS';
+        this.labels['minutes'] = 'MINUTES';
+        this.labels['seconds'] = 'SECONDS';
         if (obj) {
             if (typeof obj.elementID !== 'undefined') {
                 this.elementID = obj.elementID;
@@ -29,6 +34,22 @@ class AzCountdown
             if (typeof obj.localstorageKey !== 'undefined') {
                 this.localstorageKey = obj.localstorageKey;
             }
+            console.log(obj.labels);
+            if (typeof obj.labels !== 'undefined') {
+                if (typeof obj.labels.days !== 'undefined') {
+                    this.labels['days'] = obj.labels.days;
+                }   
+                if (typeof obj.labels.hours !== 'undefined') {
+                    this.labels['hours'] = obj.labels.hours;
+                }   
+                if (typeof obj.labels.minutes !== 'undefined') {
+                    this.labels['minutes'] = obj.labels.minutes;
+                }   
+                if (typeof obj.labels.seconds !== 'undefined') {
+                    this.labels['seconds'] = obj.labels.seconds;
+                }   
+            }
+
         }
         //this.getDateFromLocalStorage()
         let recipient = document.getElementById(this.elementID);
@@ -38,10 +59,10 @@ class AzCountdown
         azCountdown.style.padding = '20px 10px';
         azCountdown.id = `azCountdown_${this.uniqId}`;
         recipient.appendChild(azCountdown);
-        this.azCreateElement('DIAS', `azDays`);
-        this.azCreateElement('HORAS', `azHours`);
-        this.azCreateElement('MINUTOS', `azMinutes`);
-        this.azCreateElement('SEGUNDOS', `azSeconds`, true);
+        this.azCreateElement(this.labels['days'], `azDays`);
+        this.azCreateElement(this.labels['hours'], `azHours`);
+        this.azCreateElement(this.labels['minutes'], `azMinutes`);
+        this.azCreateElement(this.labels['seconds'], `azSeconds`, true);
         if (this.localstorageKey) {
             this.azCountdownSetCounter(
                 this.getDateFromLocalStorage(),
