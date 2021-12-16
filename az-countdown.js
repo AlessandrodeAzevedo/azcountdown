@@ -44,19 +44,19 @@ class AzCountdown
         this.azCreateElement('SEGUNDOS', `azSeconds`, true);
         if (this.localstorageKey) {
             this.azCountdownSetCounter(
-                this.getDateFromLocalStorage(), // or new Date('2021-08-06 00:00:00')
-                `#azDays_${this.uniqId}`, // element for days or false
-                `#azHours_${this.uniqId}`, // element for hours or false
-                `#azMinutes_${this.uniqId}`, // element for minutes or false
-                `#azSeconds_${this.uniqId}`  // element for seconds or false
+                this.getDateFromLocalStorage(),
+                `#azDays_${this.uniqId}`,
+                `#azHours_${this.uniqId}`,
+                `#azMinutes_${this.uniqId}`,
+                `#azSeconds_${this.uniqId}`
             );
         } else if (!this.uri) {
             this.azCountdownSetCounter(
                 this.date, // or new Date('2021-08-06 00:00:00')
-                `#azDays_${this.uniqId}`, // element for days or false
-                `#azHours_${this.uniqId}`, // element for hours or false
-                `#azMinutes_${this.uniqId}`, // element for minutes or false
-                `#azSeconds_${this.uniqId}`  // element for seconds or false
+                `#azDays_${this.uniqId}`,
+                `#azHours_${this.uniqId}`,
+                `#azMinutes_${this.uniqId}`,
+                `#azSeconds_${this.uniqId}`
             );
         } else {
             this.file_get_contents(this.uri);
@@ -143,15 +143,13 @@ class AzCountdown
             let data = JSON.parse(educbrCountdown[i].innerHTML);
             if (data.key == this.key){
                 this.azCountdownSetCounter(
-                    new Date(data.date), // or new Date('2021-08-06 00:00:00')
-                    `#azDays_${this.uniqId}`, // element for days or false
-                    `#azHours_${this.uniqId}`, // element for hours or false
-                    `#azMinutes_${this.uniqId}`, // element for minutes or false
-                    `#azSeconds_${this.uniqId}`  // element for seconds or false
+                    new Date(data.date),
+                    `#azDays_${this.uniqId}`,
+                    `#azHours_${this.uniqId}`,
+                    `#azMinutes_${this.uniqId}`,
+                    `#azSeconds_${this.uniqId}`
                 );
             }
         }
-        //return callback ? callback(ret) : ret; // a Promise() actually.
-        //return callback ? callback(ret) : ret; // a Promise() actually.
     }
 }
