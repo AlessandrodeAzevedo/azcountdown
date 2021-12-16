@@ -52,7 +52,7 @@ class AzCountdown
             );
         } else if (!this.uri) {
             this.azCountdownSetCounter(
-                this.date, // or new Date('2021-08-06 00:00:00')
+                this.date,
                 `#azDays_${this.uniqId}`,
                 `#azHours_${this.uniqId}`,
                 `#azMinutes_${this.uniqId}`,
