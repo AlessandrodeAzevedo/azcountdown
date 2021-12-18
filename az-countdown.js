@@ -1,7 +1,8 @@
 /*
     Name   : az-countdown
     version: v0.1
-    author : @alessandrodeazevedo
+    author : Alessandro de azevedo <alessandrodeazevedo@gmail.com>
+    author URI: http://alessandrodeazevedo.com.br/
     license: MIT
 */
 class AzCountdown
