@@ -9,10 +9,10 @@ class AzCountdown
     elementID = 'AzCountdown';
     uri;
     key;
-    localstorageKey;
     uniqId = this.guidGenerator();
     date = new Date(Date.now() + ( 3600 * 1000 * 168));
     labels = [];
+    customLayout = [];
     constructor ( obj = null) {
         this.labels['days'] = 'DAYS';
         this.labels['hours'] = 'HOURS';
@@ -31,10 +31,6 @@ class AzCountdown
             if (typeof obj.uri !== 'undefined') {
                 this.uri = obj.uri;
             }
-            if (typeof obj.localstorageKey !== 'undefined') {
-                this.localstorageKey = obj.localstorageKey;
-            }
-            console.log(obj.labels);
             if (typeof obj.labels !== 'undefined') {
                 if (typeof obj.labels.days !== 'undefined') {
                     this.labels['days'] = obj.labels.days;
@@ -49,48 +45,26 @@ class AzCountdown
                     this.labels['seconds'] = obj.labels.seconds;
                 }   
             }
-
+            if (typeof obj.customLayout !== 'undefined') {
+                if (typeof obj.customLayout.days !== 'undefined') {
+                    this.customLayout['days'] = "#" + obj.customLayout.days;
+                }   
+                if (typeof obj.customLayout.hours !== 'undefined') {
+                    this.customLayout['hours'] = "#" + obj.customLayout.hours;
+                }   
+                if (typeof obj.customLayout.minutes !== 'undefined') {
+                    this.customLayout['minutes'] = "#" + obj.customLayout.minutes;
+                }   
+                if (typeof obj.customLayout.seconds !== 'undefined') {
+                    this.customLayout['seconds'] = "#" + obj.customLayout.seconds;
+                }
+            }
         }
-        //this.getDateFromLocalStorage()
-        let recipient = document.getElementById(this.elementID);
-        let azCountdown = document.createElement('div');
-        azCountdown.style.display = 'flex';
-        azCountdown.style.justifyContent = 'space-around';
-        azCountdown.style.padding = '20px 10px';
-        azCountdown.id = `azCountdown_${this.uniqId}`;
-        recipient.appendChild(azCountdown);
-        this.azCreateElement(this.labels['days'], `azDays`);
-        this.azCreateElement(this.labels['hours'], `azHours`);
-        this.azCreateElement(this.labels['minutes'], `azMinutes`);
-        this.azCreateElement(this.labels['seconds'], `azSeconds`, true);
-        if (this.localstorageKey) {
-            this.azCountdownSetCounter(
-                this.getDateFromLocalStorage(),
-                `#azDays_${this.uniqId}`,
-                `#azHours_${this.uniqId}`,
-                `#azMinutes_${this.uniqId}`,
-                `#azSeconds_${this.uniqId}`
-            );
-        } else if (!this.uri) {
-            this.azCountdownSetCounter(
-                this.date,
-                `#azDays_${this.uniqId}`,
-                `#azHours_${this.uniqId}`,
-                `#azMinutes_${this.uniqId}`,
-                `#azSeconds_${this.uniqId}`
-            );
+        if (!this.uri) {
+            this.printCount(this.date);
         } else {
-            this.file_get_contents(this.uri);
+            this.fileGetContents(this.uri);
         }
-    }
-    getDateFromLocalStorage() {
-        /* let date = localStorage.getItem(this.localstorageKey);
-        if (!date) {
-            localStorage.setItem(this.localstorageKey) = this.date;
-        } else {
-            date = new Date(date)
-        } */
-        return false; 
     }
     guidGenerator() {
         var S4 = function() {
@@ -153,24 +127,43 @@ class AzCountdown
             }
         },1000);
     }
-    async file_get_contents(uri) {
+    async fileGetContents(uri) {
         let res = await fetch(uri),
         ret = await res.text();
         var parser = new DOMParser();
-        // Parse the text
         var doc = parser.parseFromString(ret, "text/html");
         var educbrCountdown = doc.getElementsByTagName('az-countdown');
         for (let i = 0; educbrCountdown.length > i; i++) {
             let data = JSON.parse(educbrCountdown[i].innerHTML);
             if (data.key == this.key){
-                this.azCountdownSetCounter(
-                    new Date(data.date),
-                    `#azDays_${this.uniqId}`,
-                    `#azHours_${this.uniqId}`,
-                    `#azMinutes_${this.uniqId}`,
-                    `#azSeconds_${this.uniqId}`
-                );
+                this.printCount(new Date(data.date))
             }
+        }
+    }
+    printCount(date){
+        if(Object.keys(this.customLayout).length){
+            let days = this.customLayout['days'];
+            let hours = this.customLayout['hours'];
+            let minutes = this.customLayout['minutes'];
+            let seconds = this.customLayout['seconds'];
+            this.azCountdownSetCounter(date,days,hours,minutes,seconds);
+        } else {
+            let recipient = document.getElementById(this.elementID);
+            let azCountdown = document.createElement('div');
+            azCountdown.style.display = 'flex';
+            azCountdown.style.justifyContent = 'space-around';
+            azCountdown.style.padding = '20px 10px';
+            azCountdown.id = `azCountdown_${this.uniqId}`;
+            recipient.appendChild(azCountdown);
+            this.azCreateElement(this.labels['days'], `azDays`);
+            this.azCreateElement(this.labels['hours'], `azHours`);
+            this.azCreateElement(this.labels['minutes'], `azMinutes`);
+            this.azCreateElement(this.labels['seconds'], `azSeconds`, true);
+            let days = `#azDays_${this.uniqId}`;
+            let hours = `#azHours_${this.uniqId}`;
+            let minutes = `#azMinutes_${this.uniqId}`;
+            let seconds = `#azSeconds_${this.uniqId}`;
+            this.azCountdownSetCounter(date,days,hours,minutes,seconds);
         }
     }
 }
