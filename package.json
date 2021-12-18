@@ -1,0 +1,11 @@
+{
+  "name": "az-countdown",
+  "version": "1.0.0",
+  "description": "",
+  "main": "az-countdown.js",
+  "scripts": {
+    "uglify": "uglifyjs az-countdown.js --compress --mangle --comments all -o az-countdown.min.js"
+  },
+  "author": "",
+  "license": "MIT"
+}
